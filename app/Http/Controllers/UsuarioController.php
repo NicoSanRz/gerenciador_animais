@@ -10,20 +10,20 @@ class UsuarioController extends Controller
     public function index()
     {
         $usuarios = Usuario::all();
-        return view('index_user', compact('usuarios'));
+        return view('users/users/index_user', compact('usuarios'));
     }
 
     public function list()
     {
         $usuarios = Usuario::all();
-        return view('list_user', compact('usuarios'));
+        return view('users/users/list_user', compact('usuarios'));
     }
 
 
     // CREATE
     public function create()
     {
-        return view('create_user');
+        return view('users/users/create_user');
     }
 
     public function store(Request $request)
@@ -43,7 +43,7 @@ class UsuarioController extends Controller
     public function edit($id)
     {
         $usuario = Usuario::findOrFail($id);
-        return view('edit_user', compact('usuario'));
+        return view('users/edit_user', compact('usuario'));
     }
 
     public function update(Request $request, $id)
@@ -64,10 +64,10 @@ class UsuarioController extends Controller
     public function confirmDelete($id)
     {
         $usuario = Usuario::findOrFail($id);
-        return view('delete_user', compact('usuario'));
+        return view('users/delete_user', compact('usuario'));
     }
 
-    public function destroy($id)
+     public function destroy($id)
     {
         $usuario = Usuario::findOrFail($id);
         $usuario->delete();

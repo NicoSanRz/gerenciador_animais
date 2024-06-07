@@ -10,20 +10,20 @@ class UsuarioController extends Controller
     public function index()
     {
         $usuarios = Usuario::all();
-        return view('users/users/index_user', compact('usuarios'));
+        return view('users/index_user', compact('usuarios'));
     }
 
     public function list()
     {
         $usuarios = Usuario::all();
-        return view('users/users/list_user', compact('usuarios'));
+        return view('users/list_user', compact('usuarios'));
     }
 
 
     // CREATE
     public function create()
     {
-        return view('users/users/create_user');
+        return view('users/create_user');
     }
 
     public function store(Request $request)

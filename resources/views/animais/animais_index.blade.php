@@ -1,3 +1,5 @@
+<h1>Seja Bem vindo!</h1>
+
 <div>
-    <!-- People find pleasure in different ways. I find it in keeping my mind clear. - Marcus Aurelius -->
+    <a href="{{ route('animais.list') }}">Listagem de Animais</a>
 </div>

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 /*Route::get('/', function () {
     return view('welcome');
@@ -10,6 +11,20 @@ use Illuminate\Support\Facades\Route;
 $usuario_c = 'App\Http\Controllers\UsuarioController';
 $animais_c = 'App\Http\Controllers\AnimaisController';
 $vacinas_c = 'App\Http\Controllers\VacinaController';
+
+// ROTAS DE AUTENTICAÇÃO
+
+Route::get('/login', $usuario_c . '@showLoginForm')->name('login');
+Route::post('/login', $usuario_c . '@login');
+Route::post('/logout', $usuario_c . '@logout')->name('logout');
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware('auth');
+
+
+
+
 
 Route::get('/usuarios', $usuario_c . '@index')->name('usuarios.index');
 Route::get('/animais', $animais_c  . '@index')->name('animais.index');

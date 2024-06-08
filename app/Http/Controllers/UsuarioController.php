@@ -4,9 +4,44 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
+    // Exibir formulário de login
+    public function showLoginForm()
+    {
+        return view('autenticacao.login');
+    }
+
+    // Processar o login
+    public function login(Request $request)
+    {
+        // Certifique-se de que as credenciais estão corretas
+        $credentials = [
+            'email' => $request->input('email'),
+            'password' => $request->input('senha') // Note que o campo senha é tratado como password
+        ];
+
+        // Tente autenticar o usuário
+        if (Auth::attempt($credentials)) {
+            return redirect()->intended('dashboard');
+        }
+
+        // Redirecionar de volta com erro
+        return back()->withErrors([
+            'email' => 'As credenciais fornecidas não correspondem aos nossos registros.',
+        ]);
+    }
+
+    // Realizar logout
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('/');
+    }
+
     public function index()
     {
         $usuarios = Usuario::all();

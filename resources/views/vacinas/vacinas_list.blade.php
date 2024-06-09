@@ -21,7 +21,7 @@
                     <td>{{ $vacina->descricao }}</td>
                     <td>{{ $vacina->vencimento }}</td>
                     <td>
-                        <a href="{{ route('vacinas.edit', $vacina->id) }}" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i> Editar</a>
+                        <a href="{{ route('vacinas.edit', ['animal_id' => $animal->id, 'vacina_id' => $vacina->id]) }}" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i> Editar</a>
                         <form action="{{ route('vacinas.confirm-delete', $vacina->id) }}" method="GET" style="display:inline;">
                             @csrf
                             <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Excluir</button>

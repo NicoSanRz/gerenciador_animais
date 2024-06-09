@@ -10,16 +10,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Aqui vou setar as variáveis para pegar os devidos Controllers
-$usuario_c = 'App\Http\Controllers\UsuarioController';
-$animais_c = 'App\Http\Controllers\AnimaisController';
-$vacinas_c = 'App\Http\Controllers\VacinaController';
-
 // ROTAS DE AUTENTICAÇÃO
-
-Route::get('/login', $usuario_c . '@showLoginForm')->name('login');
-Route::post('/login', $usuario_c . '@login');
-Route::post('/logout', $usuario_c . '@logout')->name('logout');
+Route::get('/login', [UsuarioController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [UsuarioController::class, 'login']);
+Route::post('/logout', [UsuarioController::class, 'logout'])->name('logout');
 
 // Rota para a página Sobre
 Route::get('/sobre', function () {
@@ -28,47 +22,31 @@ Route::get('/sobre', function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
+// Rotas de Usuários
+Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');
+Route::get('/usuarios/cadastrar', [UsuarioController::class, 'create'])->name('usuarios.create');
+Route::post('/usuarios', [UsuarioController::class, 'store'])->name('usuarios.store');
+Route::get('/usuarios/lista', [UsuarioController::class, 'list'])->name('usuarios.list');
+Route::get('/usuarios/editar/{id}', [UsuarioController::class, 'edit'])->name('usuarios.edit');
+Route::put('/usuarios/{id}', [UsuarioController::class, 'update'])->name('usuarios.update');
+Route::get('/usuarios/excluir/{id}', [UsuarioController::class, 'confirmDelete'])->name('usuarios.confirm-delete');
+Route::delete('/usuarios/{id}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');
 
-Route::get('/usuarios', $usuario_c . '@index')->name('usuarios.index');
-Route::get('/animais', $animais_c  . '@index')->name('animais.index');
-Route::get('/vacinas', $vacinas_c  . '@index')->name('vacinas.index');
+// Rotas de Animais
+Route::get('/animais', [AnimaisController::class, 'index'])->name('animais.index');
+Route::get('/animais/cadastrar', [AnimaisController::class, 'create'])->name('animais.create');
+Route::post('/animais', [AnimaisController::class, 'store'])->name('animais.store');
+Route::get('/animais/lista', [AnimaisController::class, 'list'])->name('animais.list');
+Route::get('/animais/editar/{id}', [AnimaisController::class, 'edit'])->name('animais.edit');
+Route::put('/animais/{id}', [AnimaisController::class, 'update'])->name('animais.update');
+Route::get('/animais/excluir/{id}', [AnimaisController::class, 'confirmDelete'])->name('animais.confirm-delete');
+Route::delete('/animais/{id}', [AnimaisController::class, 'destroy'])->name('animais.destroy');
 
-// Cadastrar
-Route::get('/usuarios/cadastrar', $usuario_c . '@create')->name('usuarios.create');
-Route::post('/usuarios', $usuario_c . '@store')->name('usuarios.store');
-
-Route::get('/animais/cadastrar', $animais_c . '@create')->name('animais.create');
-Route::post('/animais', $animais_c . '@store')->name('animais.store');
-
-Route::get('/animais/{id}/vacinas/create', [VacinaController::class, 'create'])->name('vacinas.create');
-
-//Route::get('/vacinas/cadastrar', $vacinas_c . '@create')->name('vacinas.create');
-Route::post('/vacinas', [VacinaController::class, 'store'])->name('vacinas.store');
-
-// Ler
-Route::get('/usuarios/lista', $usuario_c . '@list')->name('usuarios.list');
-
-Route::get('/animais/lista', $animais_c  . '@list')->name('animais.list');
-
-//Route::get('/vacinas/lista', $vacinas_c  . '@list')->name('vacinas.list');
+// Rotas de Vacinas
 Route::get('/animais/{id}/vacinas', [VacinaController::class, 'index'])->name('animais.vacinas');
-
-// Editar
-Route::get('/usuarios/editar/{id}', $usuario_c . '@edit')->name('usuarios.edit');
-Route::put('/usuarios/{id}', $usuario_c . '@update')->name('usuarios.update');
-
-Route::get('/animais/editar/{id}', $animais_c  . '@edit')->name('animais.edit');
-Route::put('/animais/{id}', $animais_c . '@update')->name('animais.update');
-
-Route::get('/vacinas/editar/{id}', $vacinas_c  . '@edit')->name('vacinas.edit');
-Route::put('/vacinas/{id}', $vacinas_c . '@update')->name('vacinas.update');
-
-// Exclusão
-Route::get('/usuarios/excluir/{id}', $usuario_c . '@confirmDelete')->name('usuarios.confirm-delete');
-Route::delete('/usuarios/{id}', $usuario_c . '@destroy')->name('usuarios.destroy');
-
-Route::get('/animais/excluir/{id}', $animais_c . '@confirmDelete')->name('animais.confirm-delete');
-Route::delete('/animais/{id}', $animais_c . '@destroy')->name('animais.destroy');
-
-Route::get('/vacinas/excluir/{id}', $vacinas_c . '@confirmDelete')->name('vacinas.confirm-delete');
-Route::delete('/vacinas/{id}', $vacinas_c . '@destroy')->name('vacinas.destroy');
+Route::get('/animais/{id}/vacinas/create', [VacinaController::class, 'create'])->name('vacinas.create');
+Route::post('/vacinas', [VacinaController::class, 'store'])->name('vacinas.store');
+Route::get('/animais/{animal_id}/vacinas/editar/{vacina_id}', [VacinaController::class, 'edit'])->name('vacinas.edit');
+Route::put('/vacinas/{id}', [VacinaController::class, 'update'])->name('vacinas.update');
+Route::get('/vacinas/excluir/{id}', [VacinaController::class, 'confirmDelete'])->name('vacinas.confirm-delete');
+Route::delete('/vacinas/{id}', [VacinaController::class, 'destroy'])->name('vacinas.destroy');

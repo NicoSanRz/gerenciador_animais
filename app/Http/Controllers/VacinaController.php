@@ -8,26 +8,13 @@ use Illuminate\Http\Request;
 
 class VacinaController extends Controller
 {
-    /*public function index()
-    {
-        $vacinas = VacinaModel::all();
-        return view('vacinas/vacinas_index', compact('vacinas'));
-    }*/
-
     public function index($id)
     {
         $animal = AnimaisModel::findOrFail($id);
         $vacinas = VacinaModel::where('id_animal', $id)->get();
-        return view('vacinas.vacinas_list', compact('animal','vacinas'));
-    }
-    
-    public function list()
-    {
-        $vacinas = VacinaModel::all();
-        return view('vacinas/vacinas_list', compact('vacinas'));
+        return view('vacinas.vacinas_list', compact('animal', 'vacinas'));
     }
 
-    // CREATE
     public function create($id)
     {
         return view('vacinas.vacinas_create', compact('id'));
@@ -49,43 +36,44 @@ class VacinaController extends Controller
             'id_animal' => $request->input('id_animal'),
         ]);
 
-        return redirect()->route('dashboard', $request->input('id_animal'))->with('success', 'Vacina cadastrada com sucesso.');
+        return redirect()->route('animais.vacinas', $request->input('id_animal'))->with('success', 'Vacina cadastrada com sucesso.');
     }
 
-    // UPDATE
-    public function edit($id)
+    public function edit($animal_id, $vacina_id)
     {
-        $vacinas = VacinaModel::findOrFail($id);
-        return view('vacinas/vacinas_edit', compact('vacinas'));
+        $vacinas = VacinaModel::findOrFail($vacina_id);
+        return view('vacinas.vacinas_edit', compact('vacinas', 'animal_id'));
     }
 
     public function update(Request $request, $id)
     {
         // Validação dos dados do formulário
+        $request->validate([
+            'descricao' => 'required|string|max:255',
+            'vencimento' => 'required|date',
+        ]);
 
         $vacinas = VacinaModel::findOrFail($id);
         $vacinas->update([
-            'descricao'   => $request->input('descricao'),
-            'vencimento'  => $request->input('vencimento'),
-            'id_animal'   => $request->input('id_animal'),
+            'descricao' => $request->input('descricao'),
+            'vencimento' => $request->input('vencimento'),
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Vacina atualizada com sucesso.');
+        return redirect()->route('animais.vacinas', $vacinas->id_animal)->with('success', 'Vacina atualizada com sucesso.');
     }
 
-    // DELETE
     public function confirmDelete($id)
     {
         $vacinas = VacinaModel::findOrFail($id);
-        return view('vacinas/vacinas_delete', compact('vacinas'));
+        return view('vacinas.vacinas_delete', compact('vacinas'));
     }
 
-     public function destroy($id)
+    public function destroy($id)
     {
         $vacinas = VacinaModel::findOrFail($id);
-        $animal = VacinaModel::where('id_animal', $id)->get();
+        $animal_id = $vacinas->id_animal;
         $vacinas->delete();
 
-        return redirect()->route('dashboard')->with('success', 'Vacina Excluída com Sucesso!');
+        return redirect()->route('animais.vacinas', $animal_id)->with('success', 'Vacina excluída com sucesso.');
     }
 }

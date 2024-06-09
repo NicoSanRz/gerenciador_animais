@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AnimaisModel;
+use App\Models\VacinaModel;
 use Illuminate\Http\Request;
 
 class AnimaisController extends Controller
@@ -66,12 +67,18 @@ class AnimaisController extends Controller
         return view('animais/animais_delete', compact('animais'));
     }
 
-     public function destroy($id)
+    public function destroy($id)
     {
-        $animais = AnimaisModel::findOrFail($id);
-        $animais->delete();
-
-        return redirect()->route('dashboard')->with('success', 'Animal Excluído com Sucesso!');
+        // Encontre o animal pelo ID
+        $animal = AnimaisModel::findOrFail($id);
+    
+        // Delete as vacinas associadas ao animal
+        VacinaModel::where('id_animal', $id)->delete();
+    
+        // Delete o animal
+        $animal->delete();
+    
+        return redirect()->route('dashboard')->with('success', 'Animal excluído com sucesso!');
     }
 
 }

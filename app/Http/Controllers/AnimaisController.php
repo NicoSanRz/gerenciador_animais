@@ -35,7 +35,7 @@ class AnimaisController extends Controller
             'status'   => $request->input('status'),
         ]);
 
-        return redirect()->route('animais.list')->with('success', 'Animal Cadastrado com Sucesso!');
+        return redirect()->route('dashboard')->with('success', 'Animal cadastrado com Sucesso!');
     }
 
     // UPDATE
@@ -56,7 +56,7 @@ class AnimaisController extends Controller
             'status'   => $request->input('status'),
         ]);
 
-        return redirect()->route('animais.index')->with('success', 'Animal atualizado com sucesso.');
+        return redirect()->route('dashboard')->with('success', 'Animal atualizado com sucesso.');
     }
 
     // DELETE
@@ -71,7 +71,7 @@ class AnimaisController extends Controller
         $animais = AnimaisModel::findOrFail($id);
         $animais->delete();
 
-        return redirect()->route('animais.index')->with('success', 'Animal Excluído com Sucesso!');
+        return redirect()->route('dashboard')->with('success', 'Animal Excluído com Sucesso!');
     }
 
 }

@@ -1,11 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\VacinaController;
+use App\Http\Controllers\AnimaisController;
+use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\DashboardController;
 
-/*Route::get('/', function () {
+Route::get('/', function () {
     return view('welcome');
-});*/
+});
 
 // Aqui vou setar as variáveis para pegar os devidos Controllers
 $usuario_c = 'App\Http\Controllers\UsuarioController';
@@ -18,12 +21,12 @@ Route::get('/login', $usuario_c . '@showLoginForm')->name('login');
 Route::post('/login', $usuario_c . '@login');
 Route::post('/logout', $usuario_c . '@logout')->name('logout');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth');
+// Rota para a página Sobre
+Route::get('/sobre', function () {
+    return view('about');
+})->name('sobre');
 
-
-
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
 
 Route::get('/usuarios', $usuario_c . '@index')->name('usuarios.index');
@@ -37,15 +40,18 @@ Route::post('/usuarios', $usuario_c . '@store')->name('usuarios.store');
 Route::get('/animais/cadastrar', $animais_c . '@create')->name('animais.create');
 Route::post('/animais', $animais_c . '@store')->name('animais.store');
 
-Route::get('/vacinas/cadastrar', $vacinas_c . '@create')->name('vacinas.create');
-Route::post('/vacinas', $vacinas_c . '@store')->name('vacinas.store');
+Route::get('/animais/{id}/vacinas/create', [VacinaController::class, 'create'])->name('vacinas.create');
+
+//Route::get('/vacinas/cadastrar', $vacinas_c . '@create')->name('vacinas.create');
+Route::post('/vacinas', [VacinaController::class, 'store'])->name('vacinas.store');
 
 // Ler
 Route::get('/usuarios/lista', $usuario_c . '@list')->name('usuarios.list');
 
 Route::get('/animais/lista', $animais_c  . '@list')->name('animais.list');
 
-Route::get('/vacinas/lista', $vacinas_c  . '@list')->name('vacinas.list');
+//Route::get('/vacinas/lista', $vacinas_c  . '@list')->name('vacinas.list');
+Route::get('/animais/{id}/vacinas', [VacinaController::class, 'index'])->name('animais.vacinas');
 
 // Editar
 Route::get('/usuarios/editar/{id}', $usuario_c . '@edit')->name('usuarios.edit');

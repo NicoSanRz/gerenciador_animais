@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
@@ -71,7 +70,7 @@ class UsuarioController extends Controller
             'senha' => bcrypt($request->input('senha')),
         ]);
 
-        return redirect()->route('usuarios.list')->with('success', 'Usuário cadastrado com sucesso.');
+        return redirect()->route('sobre')->with('success', 'Usuário cadastrado com sucesso.');
     }
 
     // UPDATE
@@ -92,7 +91,7 @@ class UsuarioController extends Controller
             'senha' => bcrypt($request->input('senha')),
         ]);
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuário atualizado com sucesso.');
+        return redirect()->route('dashboard')->with('success', 'Usuário atualizado com sucesso.');
     }
 
     // DELETE
@@ -107,7 +106,7 @@ class UsuarioController extends Controller
         $usuario = Usuario::findOrFail($id);
         $usuario->delete();
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuário excluído com sucesso.');
+        return view('welcome')->with('success', 'Usuário excluído com sucesso.');
     }
 
 }
